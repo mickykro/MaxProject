@@ -15,6 +15,22 @@ public class CategoryEnum {
 
     public CategoryEnum() {
     }
+    public static String getNameByValue(int category){
+        switch (category){
+            case Category1:
+                return "קטגוריה 1";
+            case Category2:
+                return "קטגוריה 2";
+            case Category3:
+                return "קטגוריה 3";
+            case Category4:
+                return "קטגוריה 4";
+            case Category5:
+                return "קטגוריה 5";
+            default:
+                return "";
+        }
+    }
 
     @IntDef({Category1, Category2, Category3, Category4, Category5})
     @Retention(RetentionPolicy.SOURCE)
