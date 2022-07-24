@@ -12,7 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.maxapp.R;
@@ -56,51 +58,23 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         int height = ScreenUtils.getScreenHeight(context) / 3;
         ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
         ArrayList<DataCategory> categoryList = (ArrayList<DataCategory>) mData.getmDataListCategory().clone();
-        if(!isRecommended) Collections.shuffle(categoryList);
         holder.tv_category.setText(CategoryEnum.getNameByValue(categoryList.get(position).getmCatId()));
         params.height = height;
         holder.itemView.setLayoutParams(params);
-
         DataListAdapter adapter = new DataListAdapter(getArrayByCategory(categoryList.get(position).getmCatId()));
+        if(isRecommended){
+            SnapHelper snapHelper = new PagerSnapHelper();
+            snapHelper.attachToRecyclerView(holder.rv_category);
+        }
         holder.rv_category.setAdapter(adapter);
+        holder.setPos(getArrayByCategory(categoryList.get(position).getmCatId()).size()-1);
         holder.rv_category.getLayoutManager().scrollToPosition(getArrayByCategory(categoryList.get(position).getmCatId()).size()-1);
-        holder.tv_category.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                Boolean c = b;
-            }
-        });
-        holder.rv_category.setOnFlingListener(new RecyclerView.OnFlingListener() {
-            @Override
-            public boolean onFling(int velocityX, int velocityY) {
-
-                return false;
-            }
-        });
-        holder.rv_category.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                System.out.println(b);
-            }
-        });
         holder.rv_category.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if(newState == RecyclerView.SCROLL_STATE_IDLE ){
-                    LinearLayoutManager lm = (LinearLayoutManager)holder.rv_category.getLayoutManager();
-                    int a = lm.findFirstCompletelyVisibleItemPosition();
-
-                    if(a >= 0) {
-                        View v = lm.findViewByPosition(a);
-                        int offset = v.getTop();
-                        lm.scrollToPositionWithOffset(a,offset);
-                    }else {
-                        View v = lm.findViewByPosition(holder.pos-1);
-                        int offset = v.getTop();
-                        lm.scrollToPositionWithOffset(holder.pos-1,offset);
-                    }
-                    holder.setPos(a);
+                    if(!isRecommended) holder.setPos(scrollToFullItem(holder));
                 }
 
             }
@@ -110,13 +84,28 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-        holder.tv_category.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                System.out.println(view.toString() + "|" + i + "|" + i1);
-            }
-        });
 
+    }
+
+
+    private int scrollToFullItem(ViewHolder holder){
+        LinearLayoutManager lm = (LinearLayoutManager)holder.rv_category.getLayoutManager();
+        int pos = lm.findFirstCompletelyVisibleItemPosition();
+        if(pos >= 0) {
+            View v = lm.findViewByPosition(pos);
+            if(v != null) {
+                int offset = v.getTop();
+                lm.scrollToPositionWithOffset(pos, offset);
+            }
+        }else {
+            View v = lm.findViewByPosition(holder.pos);
+            if(v != null) {
+                int offset = v.getTop();
+                pos = pos - 1;
+                lm.scrollToPositionWithOffset(pos - 1, offset);
+            }
+        }
+        return pos;
     }
 
     private ArrayList<DataObject> getArrayByCategory(int category){

@@ -9,9 +9,11 @@
         <entry key="app/src/main/res/layout/base_list_fragment.xml" value="0.21458333333333332" />
         <entry key="app/src/main/res/layout/category_adapter.xml" value="0.21458333333333332" />
         <entry key="app/src/main/res/layout/data_object_adapter.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/element_fragment.xml" value="0.3802083333333333" />
         <entry key="app/src/main/res/layout/error_image.xml" value="0.1359375" />
         <entry key="app/src/main/res/layout/tab_text.xml" value="0.3802083333333333" />
         <entry key="app/src/main/res/layout/view_pager.xml" value="0.21458333333333332" />
+        <entry key="app/src/main/res/layout/view_pager_fragment.xml" value="0.21458333333333332" />
       </map>
     </option>
   </component>

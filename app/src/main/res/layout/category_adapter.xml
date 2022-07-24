@@ -13,8 +13,8 @@
         android:gravity="center"
         android:textAlignment="center"
         android:textSize="16sp"
-        android:layout_marginEnd="4dp"
         app:layout_constraintBottom_toTopOf="@+id/rv_category"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/rv_category" />
 
     <androidx.recyclerview.widget.RecyclerView
