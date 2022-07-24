@@ -7,11 +7,16 @@ import com.android.volley.VolleyError;
 import com.example.maxapp.responses.DataListResponse;
 import com.example.maxapp.responses.ResponseBase;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ApplicationManager {
     private static ApplicationManager appData;
     private Context applicationContext;
     private DataListResponse mData;
     private VolleyControllerMock mVolleyMock = new VolleyControllerMock() ;
+    static ArrayList  TAB_TITLES = new ArrayList(Arrays.asList("כל ההטבות","הפינוקים שלי","המומלצים","המועדפים"));
+
 
 
     public static ApplicationManager getInstance() {
@@ -46,6 +51,14 @@ public class ApplicationManager {
         return appData == null ? null : appData.mData;
 
     }
+
+
+    public static String getTabTextByPosition(int position){
+        return TAB_TITLES.get(position).toString();
+    }
+
+
+
 
 
 

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.maxapp.R;
+import com.example.maxapp.customViews.CategoriesRecyclerView;
 import com.example.maxapp.utils.services.ApplicationManager;
 import com.example.maxapp.views.adapters.CategoriesAdapter;
 
@@ -21,7 +22,11 @@ public class BaseListFragment extends Fragment {
     private RecyclerView rv_categories;
     private CategoriesAdapter ct_adapter;
 
+    int tabId;
 
+    public BaseListFragment(int tabId) {
+        this.tabId = tabId;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +39,7 @@ public class BaseListFragment extends Fragment {
          View view =  inflater.inflate(R.layout.base_list_fragment,container,false);
          base_list = view.findViewById(R.id.base_list_fragment);
          rv_categories = view.findViewById(R.id.main_rv);
-         CategoriesAdapter adapter = new CategoriesAdapter();
+         CategoriesAdapter adapter = new CategoriesAdapter(isRecommended());
          int count = adapter.getItemCount();
          rv_categories.setAdapter(adapter);
         LinearLayoutManager layoutManager
@@ -42,6 +47,10 @@ public class BaseListFragment extends Fragment {
         rv_categories.setLayoutManager(layoutManager);
 
         return view;
+    }
+
+    private Boolean isRecommended(){
+        return ApplicationManager.getTabTextByPosition(tabId).equals("המומלצים");
     }
 
 }
